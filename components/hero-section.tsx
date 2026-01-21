@@ -2,8 +2,11 @@
 
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function HeroSection() {
+  const aptitudeTestUrl = "https://kkokgo-landing.vercel.app/?mode=premium"
+  
   const scrollToForm = () => {
     document.getElementById("pre-registration")?.scrollIntoView({ behavior: "smooth" })
   }
@@ -40,11 +43,14 @@ export function HeroSection() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 
+            asChild
             size="lg" 
             className="h-14 px-8 text-lg rounded-2xl font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
           >
-            우리 자녀 적성 검사하기
-            <ArrowRight className="ml-2 w-5 h-5" />
+            <Link href={aptitudeTestUrl} target="_blank" rel="noopener noreferrer">
+              우리 자녀 적성 검사하기
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Link>
           </Button>
           <Button 
             variant="outline" 
