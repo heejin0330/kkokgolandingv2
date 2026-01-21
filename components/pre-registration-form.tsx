@@ -3,7 +3,7 @@
 import React from "react"
 
 import { useState } from "react"
-import { Gift, Send, CheckCircle2 } from "lucide-react"
+import { Gift, Send, CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { supabase } from "@/lib/supabase"
 
 const interestAreas = [
   "IT/소프트웨어",
@@ -35,6 +36,8 @@ const grades = [
 
 export function PreRegistrationForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -42,11 +45,34 @@ export function PreRegistrationForm() {
     interest: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production, this would submit to an API
-    console.log("Form submitted:", formData)
-    setIsSubmitted(true)
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const { error: supabaseError } = await supabase
+        .from('pre_registrations')
+        .insert([
+          {
+            name: formData.name,
+            phone: formData.phone,
+            grade: formData.grade,
+            interest: formData.interest,
+          }
+        ])
+
+      if (supabaseError) {
+        throw supabaseError
+      }
+
+      setIsSubmitted(true)
+    } catch (err) {
+      console.error('Error submitting form:', err)
+      setError('신청 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isSubmitted) {
@@ -172,13 +198,29 @@ export function PreRegistrationForm() {
               </Select>
             </div>
             
+            {error && (
+              <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-xl">
+                {error}
+              </div>
+            )}
+            
             <Button 
               type="submit" 
               size="lg" 
               className="w-full h-14 text-lg rounded-2xl font-semibold mt-4"
+              disabled={isLoading}
             >
-              사전예약 신청하기
-              <Send className="ml-2 w-5 h-5" />
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                  신청 중...
+                </>
+              ) : (
+                <>
+                  사전예약 신청하기
+                  <Send className="ml-2 w-5 h-5" />
+                </>
+              )}
             </Button>
           </form>
         </div>

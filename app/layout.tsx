@@ -10,7 +10,7 @@ const _notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: '꼭고 - 마이스터고 & 특성화고 진학 AI 매칭 서비스',
+  title: 'AI 기반 마이스터고 특성화고 진학매칭 서비스 - 꼭고',
   description: 'AI 데이터 분석으로 아이의 적성에 딱 맞는 학교와 전공을 매칭해 드립니다. 마이스터고와 특성화고 사이에서 고민하시나요? 꼭고가 도와드립니다.',
   generator: 'PADA Labs',
   keywords: ['마이스터고', '특성화고', '직업계고', '진학', '적성검사', 'AI', '진로'],
@@ -30,6 +30,28 @@ export const metadata: Metadata = {
       },
     ],
     apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: 'AI 기반 마이스터고 특성화고 진학매칭 서비스 - 꼭고',
+    description: 'AI 데이터 분석으로 아이의 적성에 딱 맞는 학교와 전공을 매칭해 드립니다.',
+    url: 'https://kkokgo-landing.vercel.app',
+    siteName: '꼭고',
+    images: [
+      {
+        url: '/images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: '꼭고 - AI 기반 마이스터고 특성화고 진학매칭 서비스',
+      },
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AI 기반 마이스터고 특성화고 진학매칭 서비스 - 꼭고',
+    description: 'AI 데이터 분석으로 아이의 적성에 딱 맞는 학교와 전공을 매칭해 드립니다.',
+    images: ['/images/og-image.png'],
   },
 }
 
