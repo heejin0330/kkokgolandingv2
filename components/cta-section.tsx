@@ -114,7 +114,7 @@ export function CTASection() {
               <Link href={aptitudeTestUrl} target="_blank" rel="noopener noreferrer">
                 <div className="w-48 h-48 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
                   <Image
-                    src="/images/1zwid-20-281-29.png"
+                    src="/images/qr-code.png"
                     alt="우리 자녀 적성 검사하기 QR 코드"
                     width={192}
                     height={192}
