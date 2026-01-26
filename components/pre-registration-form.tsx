@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { supabase } from "@/lib/supabase"
+import { trackPreRegistration } from "@/lib/gtag"
 
 const interestAreas = [
   "마이스터고+특성화고",
@@ -155,6 +156,13 @@ export function PreRegistrationForm() {
       if (supabaseError) {
         throw supabaseError
       }
+
+      // Google Analytics 이벤트 추적
+      trackPreRegistration({
+        grade: formData.grade,
+        interest: formData.interest,
+        major: formData.major,
+      })
 
       setIsSubmitted(true)
     } catch (err) {

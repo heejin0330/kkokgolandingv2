@@ -17,7 +17,7 @@ export function Footer() {
         
         {/* Description */}
         <p className="mb-8 max-w-md mx-auto text-secondary-foreground">
-          진로 데이터를 분석하는 AI 기업, 파다랩스
+          AI 데이터 분석으로 최적화된 진로 로드맵을 제안합니다.
         </p>
         
         {/* Divider */}

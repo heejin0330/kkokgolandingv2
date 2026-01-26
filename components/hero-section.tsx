@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import Link from "next/link"
+import { trackCTAClick } from "@/lib/gtag"
 
 export function HeroSection() {
   const aptitudeTestUrl = "https://kkokgo-landing.vercel.app/?mode=premium"
@@ -64,7 +65,10 @@ export function HeroSection() {
           <Button 
             size="lg" 
             className="h-14 px-8 text-lg rounded-2xl font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              trackCTAClick('hero_aptitude_test')
+              setIsModalOpen(true)
+            }}
           >
             우리 자녀 적성 검사하기
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -73,7 +77,10 @@ export function HeroSection() {
             variant="outline" 
             size="lg" 
             className="h-14 px-8 text-lg rounded-2xl font-semibold border-2 hover:bg-muted transition-all bg-transparent"
-            onClick={scrollToForm}
+            onClick={() => {
+              trackCTAClick('hero_pre_registration')
+              scrollToForm()
+            }}
           >
             사전예약 신청하기
           </Button>

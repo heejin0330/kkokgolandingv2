@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import Image from "next/image"
 import Link from "next/link"
+import { trackCTAClick } from "@/lib/gtag"
 
 export function CTASection() {
   const aptitudeTestUrl = "https://kkokgo-landing.vercel.app/?mode=premium"
@@ -51,7 +52,10 @@ export function CTASection() {
               <Button 
                 size="lg" 
                 className="h-14 px-8 text-lg rounded-2xl font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all w-full sm:w-auto"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  trackCTAClick('cta_aptitude_test')
+                  setIsModalOpen(true)
+                }}
               >
                 우리 자녀 적성 검사하기
                 <ArrowRight className="ml-2 w-5 h-5" />
