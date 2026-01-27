@@ -232,7 +232,8 @@ export function PreRegistrationForm() {
                 placeholder="보호자 이름을 입력해 주세요"
                 className="h-14 rounded-2xl px-5 text-base"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value.slice(0, 20) })}
+                maxLength={20}
                 required
               />
             </div>
