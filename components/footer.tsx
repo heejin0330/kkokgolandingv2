@@ -24,7 +24,7 @@ export function Footer() {
         <div className="w-16 h-px bg-primary-foreground/20 mx-auto mb-8" />
         
         {/* Copyright */}
-        <p className="text-slate-500 text-sm">
+        <p className="text-primary-foreground/50 text-sm">
           Copyright &copy; {new Date().getFullYear()} PADA Labs. All Rights Reserved.
         </p>
       </div>
