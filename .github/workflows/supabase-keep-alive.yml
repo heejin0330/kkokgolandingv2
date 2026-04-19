@@ -2,16 +2,54 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    # 5일마다 한 번씩 실행 (UTC 기준)
-    - cron: '0 0 */5 * *'
-  workflow_dispatch: # 수동 실행 버튼 활성화
+    - cron: '0 0 */3 * *'  # ✅ 5일 → 3일로 변경!
+  workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Ping Supabase API
+      - name: Secret 값 확인
         run: |
-          curl -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/keep_alive?select=*" \
-          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+          if [ -z "${{ secrets.SUPABASE_URL }}" ]; then
+            echo "❌ SUPABASE_URL이 설정되지 않았습니다!"
+            exit 1
+          fi
+          if [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
+            echo "❌ SUPABASE_ANON_KEY가 설정되지 않았습니다!"
+            exit 1
+          fi
+          echo "✅ Secret 값 확인 완료"
+
+      - name: Supabase ping 호출 (최대 3회 재시도)
+        run: |
+          MAX_RETRY=3
+          WAIT_SEC=10
+          ATTEMPT=0
+
+          while [ $ATTEMPT -lt $MAX_RETRY ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "🔄 시도 $ATTEMPT / $MAX_RETRY"
+
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+              -X POST '${{ secrets.SUPABASE_URL }}/rest/v1/rpc/ping' \
+              -H 'apikey: ${{ secrets.SUPABASE_ANON_KEY }}' \
+              -H 'Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}' \
+              -H 'Content-Type: application/json' \
+              --max-time 30)
+
+            echo "응답 코드: $RESPONSE"
+
+            if [ "$RESPONSE" -ge 200 ] && [ "$RESPONSE" -lt 300 ]; then
+              echo "✅ ping 성공 — Supabase가 살아있습니다!"
+              exit 0
+            fi
+
+            echo "⚠️ 응답 코드 $RESPONSE — ${WAIT_SEC}초 후 재시도합니다..."
+            sleep $WAIT_SEC
+            WAIT_SEC=$((WAIT_SEC * 2))  # 10초 → 20초 → 40초 (지수 백오프)
+          done
+
+          echo "❌ $MAX_RETRY 회 모두 실패했습니다."
+          exit 1
